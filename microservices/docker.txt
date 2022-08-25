@@ -1,0 +1,21 @@
+
+Springboot dockerization steps--------
+	1.	Build Jar with maven
+			On eclipse: Run -> Maven Build
+			On Cmd:		mvn clean package
+			
+	2.	Create DockerFile with Template like bellow
+	
+			FROM openjdk:17-jdk-alpine 		#***java version should be same as project java version mentioned on pom.xml
+			VOLUME /tmp
+			ARG JAVA_OPTS
+			ENV JAVA_OPTS=$JAVA_OPTS
+			COPY target/naming-server-0.0.1-SNAPSHOT.jar namingserver.jar
+			EXPOSE 8761
+			ENTRYPOINT exec java $JAVA_OPTS -jar namingserver.jar
+			# For Spring-Boot project, use the entrypoint below to reduce Tomcat startup time.
+			# ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar namingserver.jar
+			
+			------------------------\
+			Easily generate DockerFile in VSC
+				CTRL + Shift + P -> add to docker workspace -> follow path ...
